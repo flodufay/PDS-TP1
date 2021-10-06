@@ -36,17 +36,17 @@ let parse_add : token Stream.t -> int = parser
 let count_add = parser
   | [< l = many parse_add >] -> List.length l 
 
-let rec parse parser =
-  parse_sujet parser [];;
+let rec parse p =
+  parse_sujet p [];;
 
-let rec parse_sujet parser res_sujet = match parser with
+let rec parse_sujet p res_sujet = match p with
   | String x::q -> parse_predicat x q res_sujet []
   | [] -> res_sujet
 
-let rec parse_predicat x parser res_sujet res_predicat = match parser with
+let rec parse_predicat x p res_sujet res_predicat = match p with
   | String y::q -> parse_objet y q res_sujet [] res_predicat
 
-let rec parse_objet x y parser res_sujet res_objet = match parser with
+let rec parse_objet x y paprser res_sujet res_objet = match p with
   | String z::ADD::q -> parse_objet x y q res_sujet ObjectTTL(z)::res_objet res_predicat
   | String z::SEMICOLON::q -> parse_predicat x q res_sujet PredicatTTL( y, ObjectTTl(z)::res_objet)::res_predicat
   | String z::OTHERSUBJECT::q -> parse_sujet q SujetTTL(x, PredicatTTL( y, ObjectTTl(z)::res_objet)::res_predicat)::res_sujet
