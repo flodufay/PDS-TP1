@@ -1,24 +1,80 @@
 ### Starting build.
-# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
 ocamldep.opt -pp camlp4o -modules main.ml > main.ml.depends # cached
-# Target: ASD.ml.depends, tags: { extension:ml, file:ASD.ml, ocaml, ocamldep, quiet }
+# Target: ASD.ml.depends, tags: { extension:ml, file:ASD.ml, ocaml, ocamldep, quiet, traverse }
 ocamldep.opt -pp camlp4o -modules ASD.ml > ASD.ml.depends # cached
-# Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
+# Target: ASD.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:ASD.cmo, file:ASD.ml, implem, ocaml, quiet, traverse }
+ocamlc.opt -c -pp camlp4o -o ASD.cmo ASD.ml # cached
+# Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet, traverse }
 ocamllex.opt -q lexer.mll # cached
-# Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
+# Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet, traverse }
 ocamldep.opt -pp camlp4o -modules lexer.ml > lexer.ml.depends # cached
-# Target: token.ml.depends, tags: { extension:ml, file:token.ml, ocaml, ocamldep, quiet }
+# Target: token.ml.depends, tags: { extension:ml, file:token.ml, ocaml, ocamldep, quiet, traverse }
 ocamldep.opt -pp camlp4o -modules token.ml > token.ml.depends # cached
-# Target: token.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:token.cmo, file:token.ml, implem, ocaml, quiet }
+# Target: token.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:token.cmo, file:token.ml, implem, ocaml, quiet, traverse }
 ocamlc.opt -c -pp camlp4o -o token.cmo token.ml # cached
-# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
+# Target: lexer.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexer.cmo, file:lexer.ml, implem, ocaml, quiet, traverse }
+ocamlc.opt -c -pp camlp4o -o lexer.cmo lexer.ml # cached
+# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet, traverse }
 ocamldep.opt -pp camlp4o -modules parser.ml > parser.ml.depends
-+ ocamldep.opt -pp camlp4o -modules parser.ml > parser.ml.depends
-File "parser.ml", line 39, characters 8-13:
-Parse error: [fun_binding] expected after [ipatt] (in [let_binding])
-File "parser.ml", line 1:
-Error: Error while running external preprocessor
-Command line: camlp4o 'parser.ml' > /tmp/ocamlpp2212fe
-
-Command exited with code 2.
-# Compilation unsuccessful.
+# Target: parser.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:parser.cmo, file:parser.ml, implem, ocaml, quiet, traverse }
+ocamlc.opt -c -pp camlp4o -o parser.cmo parser.ml
++ ocamlc.opt -c -pp camlp4o -o parser.cmo parser.ml
+File "parser.ml", line 13, characters 109-524:
+13 | .............................................................................................................match p with
+14 |       | (STRING z)::ADD::q -> parse_objet x y q res_sujet res_predicat (new ASD.objetTTL(z)::res_objet)
+15 |       | (STRING z)::SEMICOLON::q -> parse_predicat x q res_sujet (new ASD.predicatTTL y (new ASD.objetTTL(z)::res_objet)::res_predicat) 
+16 |       | (STRING z)::OTHERSUBJECT::q -> parse_sujet q ((new ASD.sujetTTL x ((new ASD.predicatTTL y ((new ASD.objetTTL(z))::res_objet))::res_predicat))::res_sujet)...
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(STRING _::STRING _::_|STRING _::[]|(SEMICOLON|OTHERSUBJECT|ADD)::_|[])
+File "parser.ml", line 17, characters 2-81:
+17 | ..match p with
+18 |     | (STRING y)::q -> parse_objet x y q res_sujet res_predicat []...
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+((SEMICOLON|OTHERSUBJECT|ADD)::_|[])
+File "parser.ml", line 19, characters 0-85:
+19 | match p with
+20 |   | (STRING x)::q -> parse_predicat x q res_sujet []
+21 |   | [] -> res_sujet..
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(SEMICOLON|OTHERSUBJECT|ADD)::_
+# Target: main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
+ocamlc.opt -c -pp camlp4o -o main.cmo main.ml
+# Target: token.cmx, tags: { compile, extension:cmx, extension:ml, file:token.cmx, file:token.ml, implem, native, ocaml, quiet, traverse }
+ocamlopt.opt -c -pp camlp4o -o token.cmx token.ml
+# Target: ASD.cmx, tags: { compile, extension:cmx, extension:ml, file:ASD.cmx, file:ASD.ml, implem, native, ocaml, quiet, traverse }
+ocamlopt.opt -c -pp camlp4o -o ASD.cmx ASD.ml
+# Target: lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet, traverse }
+ocamlopt.opt -c -pp camlp4o -o lexer.cmx lexer.ml
+# Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet, traverse }
+ocamlopt.opt -c -pp camlp4o -o parser.cmx parser.ml
++ ocamlopt.opt -c -pp camlp4o -o parser.cmx parser.ml
+File "parser.ml", line 13, characters 109-524:
+13 | .............................................................................................................match p with
+14 |       | (STRING z)::ADD::q -> parse_objet x y q res_sujet res_predicat (new ASD.objetTTL(z)::res_objet)
+15 |       | (STRING z)::SEMICOLON::q -> parse_predicat x q res_sujet (new ASD.predicatTTL y (new ASD.objetTTL(z)::res_objet)::res_predicat) 
+16 |       | (STRING z)::OTHERSUBJECT::q -> parse_sujet q ((new ASD.sujetTTL x ((new ASD.predicatTTL y ((new ASD.objetTTL(z))::res_objet))::res_predicat))::res_sujet)...
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(STRING _::STRING _::_|STRING _::[]|(SEMICOLON|OTHERSUBJECT|ADD)::_|[])
+File "parser.ml", line 17, characters 2-81:
+17 | ..match p with
+18 |     | (STRING y)::q -> parse_objet x y q res_sujet res_predicat []...
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+((SEMICOLON|OTHERSUBJECT|ADD)::_|[])
+File "parser.ml", line 19, characters 0-85:
+19 | match p with
+20 |   | (STRING x)::q -> parse_predicat x q res_sujet []
+21 |   | [] -> res_sujet..
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(SEMICOLON|OTHERSUBJECT|ADD)::_
+# Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet, traverse }
+ocamlopt.opt -c -pp camlp4o -o main.cmx main.ml
+# Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet, traverse }
+ocamlopt.opt ASD.cmx token.cmx lexer.cmx parser.cmx main.cmx -o main.native
+# Compilation successful.

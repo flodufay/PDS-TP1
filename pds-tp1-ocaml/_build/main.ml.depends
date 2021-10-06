@@ -1,1 +1,1 @@
-main.ml: ASD Lexer Lexing Parser Printf Stream
+main.ml: ASD Lexer Lexing Parser Printf

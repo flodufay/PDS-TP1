@@ -1,6 +1,6 @@
 type token =
   | SEMICOLON
-  | String of string
+  | STRING of string
   | OTHERSUBJECT
   | ADD
 
