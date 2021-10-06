@@ -7,7 +7,6 @@
 
 
 
-
 class objetN(objet : string) =
   object
     val x = objet
@@ -32,7 +31,7 @@ class phraseN (multiSujet : sujetN list) =
   object
     val p = multiSujet
     method print_doc :  string = match p with
-      |t::q -> t#print_doc ^ "/n" ^ (phraseN(q))#print_doc
+      |t::q -> t#print_doc ^ "/n" ^ (new phraseN(q))#print_doc
       | _ -> ""
 end;;
 
@@ -40,37 +39,49 @@ end;;
 class objetTTL (objet : string) =
   object
     val x = objet
-    method transform y z = sujetN y (predicatN z (objetN x)) 
+    method transform y z =new  sujetN y (new predicatN z (new objetN x)) 
 end;;
+
+
+let rec parcoursPredicatTTL y x (l : objetTTL list) = match l with
+  |t::q -> (t#transform y x)::(parcoursPredicatTTL y x q)
+  |_ -> []
+
 
 class predicatTTL (predicat : string) (multiObjet : objetTTL list) =
   object
     val x = predicat
     val l = multiObjet
-    method transform y = ( parcours y x l)
-    method parcours y x l = match l with
-        |t::q -> (t#transform y x)::(parcours y x q)
-        |_ -> []
-end;;
+    method transform y = ( parcoursPredicatTTL y x l)
+        end;;
+
+let rec parcoursSujetTTL x (l : predicatTTL list) = match l with
+        |t::q -> (t#transform x) @ (parcoursSujetTTL x q)
+        |_ -> [] 
+
 
 class sujetTTL (sujet : string) (multiPredicat : predicatTTL list) =
   object
     val x = sujet
     val l = multiPredicat
-    method transform : sujetN = ( parcours x l)
-    method parcours x l = match l with
-        |t::q -> (t#tranform x) :: (parcours x q)
-        |_ -> [] 
+    method transform : sujetN list = (parcoursSujetTTL x l)
+
 end;;
+
+let rec parcoursPhraseTTL (p : sujetTTL list) = match p with
+        |t::q -> t#transform @ (parcoursPhraseTTL q)
+        |_ -> []
 
 class phraseTTL (multiSujet : sujetTTL list) =
   object
     val p = multiSujet
-    method transform : phraseN = phraseN (parcours p) 
-    method parcours p = match p with
-        |t::q -> t#transform :: (parcours q)
-        |_ -> []
+    method transform : phraseN = new phraseN (parcoursPhraseTTL p) 
 end;;
+
+
+
+
+
 
 
 
