@@ -5,10 +5,10 @@ open ASD
 let () =
   (* Use with a manually made AST *)
   let ast = ()
-  in print_endline (ASD.ntriples_of_ast ast)
+  in print_endline (ASD.ntriples_of_ast ast) 
 
   (* Use with lexer and parser *)
-  (*
+  
   let lexbuf = Lexing.from_channel stdin
   in try
     let token_stream = Stream.of_list (Lexer.tokenize lexbuf)
@@ -22,4 +22,3 @@ let () =
       e.character e.pos e.line;
     exit 1
   end
-  *)

@@ -11,9 +11,11 @@
   exception Unexpected_character of error
 }
 
+
 (************************************************)
 
 let blanks    = [' ' '\t' '\n']
+
 
 rule tokenize = parse
 
@@ -30,6 +32,15 @@ rule tokenize = parse
 
   | ';'
       { SEMICOLON :: tokenize lexbuf }
+
+  | '.'
+      { OTHERSUBJECT :: tokenize lexbuf }
+
+  | ','
+      { ADD :: tokenize lexbuf }
+
+  | ['a'-'z' 'A'-'Z'] (['a'-'z' 'A'-'Z'] | ['0'-'9'] )* as n
+      { STRING(n) :: tokenize lexbuf}
 
 
   (* end-of-file : end up with the empty stream *)
