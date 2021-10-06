@@ -1,0 +1,24 @@
+### Starting build.
+# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -pp camlp4o -modules main.ml > main.ml.depends # cached
+# Target: ASD.ml.depends, tags: { extension:ml, file:ASD.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -pp camlp4o -modules ASD.ml > ASD.ml.depends # cached
+# Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
+ocamllex.opt -q lexer.mll # cached
+# Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -pp camlp4o -modules lexer.ml > lexer.ml.depends # cached
+# Target: token.ml.depends, tags: { extension:ml, file:token.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -pp camlp4o -modules token.ml > token.ml.depends # cached
+# Target: token.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:token.cmo, file:token.ml, implem, ocaml, quiet }
+ocamlc.opt -c -pp camlp4o -o token.cmo token.ml # cached
+# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -pp camlp4o -modules parser.ml > parser.ml.depends
++ ocamldep.opt -pp camlp4o -modules parser.ml > parser.ml.depends
+File "parser.ml", line 39, characters 8-13:
+Parse error: [fun_binding] expected after [ipatt] (in [let_binding])
+File "parser.ml", line 1:
+Error: Error while running external preprocessor
+Command line: camlp4o 'parser.ml' > /tmp/ocamlpp2212fe
+
+Command exited with code 2.
+# Compilation unsuccessful.
